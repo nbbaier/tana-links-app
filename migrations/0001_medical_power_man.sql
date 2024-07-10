@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `link_mappings_mappings_unique` ON `link_mappings` (`mappings`);
