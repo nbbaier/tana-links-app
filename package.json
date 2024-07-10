@@ -12,8 +12,8 @@
   "scripts": {
     "generate": "bunx drizzle-kit generate",
     "migrate:prod": "bunx drizzle-kit migrate",
-    "migrate:dev": "NODE_ENV bunx drizzle-kit migrate",
-    "seed": "VALTOWN=$VALTOWN NODE_ENV=test touch ./local.db && bun run generate && bun run migrate:dev && bun src/db/seed.ts"
+    "migrate:dev": "bunx drizzle-kit migrate --config ./local.config.ts",
+    "seed": "NODE_ENV=test bun src/db/seed.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",

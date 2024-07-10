@@ -4,7 +4,6 @@ export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./migrations",
   dialect: "sqlite",
-  driver: "turso",
   dbCredentials: {
     url: "file:local.db",
   },

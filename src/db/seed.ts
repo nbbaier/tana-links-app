@@ -26,6 +26,8 @@ async function getVTLinks(limit?: number) {
     }),
   });
 
+  if (!res.ok) throw new Error("Failed to fetch data from val.town");
+
   const data = sqlToJSON(await res.json()) as {
     id: number;
     link_id: string;
@@ -40,7 +42,7 @@ async function getVTLinks(limit?: number) {
 }
 
 async function seedLinks(limit?: number) {
-  console.log("Fetching data from Val.Town");
+  console.log("Fetching data from val.town");
 
   let data = await getVTLinks(limit);
 
@@ -61,4 +63,4 @@ async function seedLinks(limit?: number) {
 }
 
 await db.delete(linksTable);
-await seedLinks(20);
+await seedLinks();
