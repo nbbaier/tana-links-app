@@ -1,12 +1,13 @@
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 
+output_*.json
+
 # Logs
 
 logs
 _.log
 npm-debug.log_
-yarn-debug.log*
-yarn-error.log*
+yarn-debug.log*v
 lerna-debug.log*
 .pnpm-debug.log*
 

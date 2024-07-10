@@ -1,12 +1,19 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "957796d4-fbf7-4304-a12e-5e5e2c5ac747",
+  "id": "e196542b-6443-4a8b-822e-f040a3866dfe",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "link_mappings": {
       "name": "link_mappings",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
         "mappings": {
           "name": "mappings",
           "type": "blob",
@@ -15,7 +22,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "link_mappings_mappings_unique": {
+          "name": "link_mappings_mappings_unique",
+          "columns": [
+            "mappings"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
@@ -26,9 +41,9 @@
         "id": {
           "name": "id",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
         },
         "vtid": {
           "name": "vtid",
@@ -86,89 +101,13 @@
         "link_idx": {
           "name": "link_idx",
           "columns": [
+            "link_id",
             "link_id"
           ],
           "isUnique": true
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "customName": {
-          "columns": [
-            "id",
-            "link_id"
-          ],
-          "name": "customName"
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "normed_tana_links": {
-      "name": "normed_tana_links",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "tana_links_id": {
-          "name": "tana_links_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "link_id": {
-          "name": "link_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "link_url": {
-          "name": "link_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "normed_link_url": {
-          "name": "normed_link_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "normed_idx": {
-          "name": "normed_idx",
-          "columns": [
-            "tana_links_id",
-            "link_id"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {
-        "fk_normalized_link": {
-          "name": "fk_normalized_link",
-          "tableFrom": "normed_tana_links",
-          "tableTo": "tana_links",
-          "columnsFrom": [
-            "tana_links_id",
-            "link_id"
-          ],
-          "columnsTo": [
-            "id",
-            "link_id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }

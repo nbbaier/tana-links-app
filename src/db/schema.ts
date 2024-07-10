@@ -12,7 +12,7 @@ import {
 export const linksTable = sqliteTable(
   "tana_links",
   {
-    id: integer("id"),
+    id: integer("id").primaryKey({ autoIncrement: true }),
     vtid: integer("vtid").notNull(),
     link_id: text("link_id").notNull(),
     link_url: text("link_url").notNull(),
@@ -29,32 +29,9 @@ export const linksTable = sqliteTable(
   },
   (table) => {
     return {
-      pk: primaryKey({
-        name: "customName",
-        columns: [table.id, table.link_id],
-      }),
-      linkIdx: uniqueIndex("link_idx").on(table.link_id),
+      linkIdx: uniqueIndex("link_idx").on(table.link_id, table.link_id),
     };
   }
-);
-
-export const normedLinkTable = sqliteTable(
-  "normed_tana_links",
-  {
-    id: integer("id").primaryKey({ autoIncrement: true }),
-    tana_links_id: integer("tana_links_id").notNull(),
-    link_id: text("link_id").notNull(),
-    raw_link_url: text("link_url").notNull(),
-    normed_link_url: text("normed_link_url").notNull(),
-  },
-  (table) => ({
-    fk: foreignKey({
-      columns: [table.tana_links_id, table.link_id],
-      foreignColumns: [linksTable.id, linksTable.link_id],
-      name: "fk_normalized_link",
-    }),
-    nromedIdx: uniqueIndex("normed_idx").on(table.tana_links_id, table.link_id),
-  })
 );
 
 export const linkMappingsTable = sqliteTable("link_mappings", {
@@ -72,9 +49,6 @@ export const linkMappingsTable = sqliteTable("link_mappings", {
 
 export type InsertLink = typeof linksTable.$inferInsert;
 export type SelectLink = typeof linksTable.$inferSelect;
-
-export type InsertNormedLink = typeof normedLinkTable.$inferInsert;
-export type SelectNormedLink = typeof normedLinkTable.$inferSelect;
 
 export type InsertLinkMapping = typeof linkMappingsTable.$inferInsert;
 export type SelectLinkMapping = typeof linkMappingsTable.$inferSelect;

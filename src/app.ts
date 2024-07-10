@@ -1,14 +1,12 @@
-import { getLinks } from "./db/queries";
+import { db } from "./db/db.ts";
+import { getLinks, upsertLinkMapping } from "./db/queries";
+import { linkMappingsTable } from "./db/schema";
 import type { TanaLink } from "./types";
-import { upsertLinkMapping } from "./db/queries";
 import {
   extractUniqueHostnames,
-  findWWWDomains,
   filterMatchingPairs,
+  findWWWDomains,
 } from "./utils";
-import { linkMappingsTable } from "./db/schema";
-import { getTableName } from "drizzle-orm";
-import { db } from "./db/db";
 
 const results = (await getLinks.execute()) as TanaLink[];
 
