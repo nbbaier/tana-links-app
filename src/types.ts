@@ -1,3 +1,10 @@
+declare module "bun" {
+	interface Env {
+		TURSO_TANA_LINKS_URL: string;
+		TURSO_TANA_LINKS_TOKEN: string;
+	}
+}
+
 export type TanaLink = {
 	id: number;
 	vtid: number;
