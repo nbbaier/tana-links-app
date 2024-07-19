@@ -1,3 +1,4 @@
+import type { ResultSet, Value } from "@libsql/client";
 import type { TanaLink, DomainPair } from "./types";
 
 export function extractUniqueHostnames(rows: TanaLink[]): string[] {
@@ -47,4 +48,16 @@ export function mergeMappings(
 	);
 }
 
-export const foo = "bar";
+export const sqlToJSON = (result: ResultSet) => {
+	const { columns, rows } = result;
+
+	return rows.map((row) =>
+		columns.reduce(
+			(obj, col, index) => {
+				obj[col] = row[index];
+				return obj;
+			},
+			{} as { [key: string]: Value },
+		),
+	);
+};

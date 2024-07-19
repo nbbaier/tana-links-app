@@ -1,65 +1,63 @@
 import { linksTable, type InsertLink } from "./schema";
 import { db } from "./db";
-import type { ResultSet } from "@libsql/client";
+import type { ResultSet, Value } from "@libsql/client";
+import { sqlToJSON } from "../utils";
+import type { VTLink } from "../types";
 
-const sqlToJSON = (result: ResultSet) => {
-  const { columns, rows } = result;
+async function getVTLinks(limit?: number): Promise<VTLink[]> {
+	const limitConstraint = limit ? `limit ${limit}` : "";
 
-  return rows.map((row) =>
-    columns.reduce((obj, col, index) => {
-      obj[col] = row[index];
-      return obj;
-    }, {} as { [key: string]: any })
-  );
-};
+	try {
+		const res = await fetch("https://api.val.town/v1/sqlite/execute", {
+			method: "POST",
+			headers: {
+				Authorization: `Bearer ${process.env.VALTOWN}`,
+			},
+			body: JSON.stringify({
+				statement: `select * from tana_links ${limitConstraint};`,
+			}),
+		});
 
-async function getVTLinks(limit?: number) {
-  const limitConstraint = limit ? `limit ${limit}` : "";
+		if (!res.ok) {
+			throw new Error(`${res.status} ${res.statusText}`);
+		}
 
-  const res = await fetch("https://api.val.town/v1/sqlite/execute", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.VALTOWN}`,
-    },
-    body: JSON.stringify({
-      statement: `select * from tana_links ${limitConstraint};`,
-    }),
-  });
+		const jsonResponse = await res.json();
+		const data = sqlToJSON(jsonResponse) as VTLink[];
 
-  if (!res.ok) throw new Error("Failed to fetch data from val.town");
-
-  const data = sqlToJSON(await res.json()) as {
-    id: number;
-    link_id: string;
-    link_url: string;
-    saved_datetime: string;
-    saved_timestamp: number;
-    created_at: string;
-    updated_at: string;
-  }[];
-
-  return data;
+		return data;
+	} catch (error) {
+		throw new Error(
+			`Error fetching VT links: ${error instanceof Error ? error.message : "Unknown error"}`,
+		);
+	}
 }
 
 async function seedLinks(limit?: number) {
-  console.log("Fetching data from val.town");
+	console.log("Fetching data from val.town");
 
-  let data = await getVTLinks(limit);
+	let data: VTLink[] = [];
 
-  console.log("Seeding links");
+	try {
+		data = await getVTLinks(limit);
+	} catch (error) {
+		console.error(error);
+	}
 
-  for (const item of data) {
-    const newRow: InsertLink = {
-      vtid: item.id,
-      link_id: item.link_id,
-      link_url: item.link_url,
-      saved_datetime: item.saved_datetime,
-      saved_timestamp: new Date(item.saved_timestamp),
-      created_at: item.created_at,
-      updated_at: item.updated_at,
-    };
-    await db.insert(linksTable).values(newRow);
-  }
+	console.log("Seeding links");
+
+	for (const item of data) {
+		const newRow: InsertLink = {
+			vtid: item.id,
+			link_id: item.link_id,
+			link_url: item.link_url,
+			saved_datetime: item.saved_datetime,
+			saved_timestamp: new Date(item.saved_timestamp),
+			created_at: item.created_at,
+			updated_at: item.updated_at,
+		};
+		await db.insert(linksTable).values(newRow);
+	}
 }
 
 await db.delete(linksTable);
