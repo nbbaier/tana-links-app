@@ -1,7 +1,7 @@
 declare module "bun" {
 	interface Env {
-		TURSO_TANA_LINKS_URL: string;
-		TURSO_TANA_LINKS_TOKEN: string;
+		TURSO_DB_URL: string;
+		TURSO_DB_TOKEN: string;
 	}
 }
 
