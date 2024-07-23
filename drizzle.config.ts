@@ -1,7 +1,7 @@
 import { defineConfig } from "drizzle-kit";
 
-const url = Bun.env.TURSO_TANA_LINKS_URL;
-const authToken = Bun.env.TURSO_TANA_LINKS_TOKEN;
+const url = process.env.TURSO_DB_URL;
+const authToken = process.env.TURSO_DB_TOKEN;
 
 export default defineConfig({
 	schema: "./src/db/schema.ts",
