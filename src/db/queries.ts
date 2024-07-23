@@ -1,17 +1,27 @@
+import { mergeMappings } from "../utils";
 import { db } from "./db.ts";
 import {
-	type InsertLink,
-	type SelectLink,
-	linksTable,
 	linkMappingsTable,
+	linksTable,
 	type InsertLinkMapping,
-	type SelectLinkMapping,
+	type SelectLink,
 } from "./schema";
-import type { TanaLink } from "../types";
-import { mergeMappings } from "../utils";
 
-export const getLinks = db.select().from(linksTable);
+/**
+ * Retrieves all links from the database.
+ * @returns A promise that resolves to an array of SelectLink objects.
+ */
+export const getLinks = async (): Promise<SelectLink[]> =>
+	db.select().from(linksTable);
 
+export const getLinkMappings = async () => db.select().from(linkMappingsTable);
+
+/**
+ * Upserts a link mapping into the database.
+ *
+ * @param linkMapping - The link mapping to be upserted.
+ * @returns A promise that resolves with the result of the upsert operation.
+ */
 export const upsertLinkMapping = async (linkMapping: InsertLinkMapping) => {
 	const { mappings: newMappings } = linkMapping;
 	const res = await db.select().from(linkMappingsTable);

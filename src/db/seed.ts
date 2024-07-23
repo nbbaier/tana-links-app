@@ -1,9 +1,14 @@
-import { linksTable, type InsertLink } from "./schema";
-import { db } from "./db";
-import type { ResultSet, Value } from "@libsql/client";
-import { sqlToJSON } from "../utils";
 import type { VTLink } from "../types";
+import { sqlToJSON } from "../utils";
+import { db } from "./db";
+import { linksTable, type InsertLink } from "./schema";
 
+/**
+ * Retrieves VTLinks from the database.
+ * @param limit - The maximum number of VTLinks to retrieve.
+ * @returns A promise that resolves to an array of VTLinks.
+ * @throws If there is an error fetching the VTLinks.
+ */
 async function getVTLinks(limit?: number): Promise<VTLink[]> {
 	const limitConstraint = limit ? `limit ${limit}` : "";
 
