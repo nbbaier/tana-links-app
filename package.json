@@ -11,8 +11,8 @@
     "typescript": "^5.0.0"
   },
   "scripts": {
-    "generate": "bunx --bun drizzle-kit generate",
-    "generate:dev": "bunx --bun drizzle-kit generate",
+    "generate": "bunx drizzle-kit generate",
+    "generate:dev": "bunx drizzle-kit generate",
     "migrate": "bunx --bun drizzle-kit migrate",
     "migrate:dev": "bunx --bun drizzle-kit migrate --config ./local.config.ts",
     "seed": "NODE_ENV=test bun src/db/seed.ts"
