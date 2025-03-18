@@ -11,8 +11,11 @@ import {
  * Retrieves all links from the database.
  * @returns A promise that resolves to an array of SelectLink objects.
  */
-export const getLinks = async (): Promise<SelectLink[]> =>
+export const getAllLinks = async (): Promise<SelectLink[]> =>
 	db.select().from(linksTable);
+
+export const getLinks = async (limit: number): Promise<SelectLink[]> =>
+	db.select().from(linksTable).limit(limit);
 
 export const getLinkMappings = async () => db.select().from(linkMappingsTable);
 

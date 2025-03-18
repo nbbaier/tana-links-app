@@ -20,7 +20,10 @@
   "dependencies": {
     "@libsql/client": "^0.7.0",
     "@libsql/sqlite3": "^0.3.1",
+    "dead-or-alive": "^1.0.4",
     "drizzle-orm": "^0.32.0",
-    "normalize-url": "^8.0.1"
+    "normalize-url": "^8.0.1",
+    "tldts": "^6.1.77",
+    "url-metadata": "^4.1.1"
   }
 }

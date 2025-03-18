@@ -1,7 +1,8 @@
 declare module "bun" {
 	interface Env {
 		TURSO_DB_URL: string;
-		TURSO_DB_TOKEN: string;
+		TURSO_AUTH_TOKEN: string;
+		LOCAL_DB: string;
 	}
 }
 

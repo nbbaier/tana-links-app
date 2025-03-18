@@ -19,7 +19,7 @@ async function getVTLinks(limit?: number): Promise<VTLink[]> {
 				Authorization: `Bearer ${process.env.VALTOWN}`,
 			},
 			body: JSON.stringify({
-				statement: `select * from tana_links ${limitConstraint};`,
+				statement: `select * from tana_links order by random() ${limitConstraint};`,
 			}),
 		});
 
@@ -38,7 +38,7 @@ async function getVTLinks(limit?: number): Promise<VTLink[]> {
 	}
 }
 
-async function seedLinks(limit?: number) {
+async function seedLinks(limit = 1000) {
 	console.log("Fetching data from val.town");
 
 	let data: VTLink[] = [];
@@ -66,4 +66,4 @@ async function seedLinks(limit?: number) {
 }
 
 await db.delete(linksTable);
-await seedLinks();
+await seedLinks(2000);

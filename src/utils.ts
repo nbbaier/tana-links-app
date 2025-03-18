@@ -1,5 +1,5 @@
 import type { ResultSet, Value } from "@libsql/client";
-import { getLinks } from "./db/queries";
+import { getAllLinks } from "./db/queries";
 import type { DomainPair, TanaLink } from "./types";
 
 /**
@@ -8,7 +8,9 @@ import type { DomainPair, TanaLink } from "./types";
  * @param rows - An array of TanaLink objects.
  * @returns An array of unique hostnames extracted from the link URLs.
  */
-export function extractUniqueHostnames(rows: TanaLink[]): string[] {
+export function extractUniqueHostnames(
+	rows: ({ link_url: string } | TanaLink)[],
+): string[] {
 	const uniqueHosts = new Set(
 		rows.map((row) => new URL(row.link_url).hostname),
 	);
@@ -101,7 +103,7 @@ export const sqlToJSON = (sqlResult: ResultSet) => {
 export async function getGroupedDuplicateURLs(): Promise<{
 	[x: string]: { count: number; urls: string[] };
 }> {
-	const links = await getLinks();
+	const links = await getAllLinks();
 	const urlsGroupedByHostname = links.reduce(
 		(
 			acc: { [hostname: string]: { count: number; urls: string[] } },
